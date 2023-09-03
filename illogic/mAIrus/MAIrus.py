@@ -1,3 +1,5 @@
+"""mAIrus - A tool for generating text using OpenAI's GPT-3 API"""
+
 import os
 import openai
 import time
@@ -8,8 +10,14 @@ import subprocess
 
 import sys
 
-import pymel.core as pm
-import maya.OpenMayaUI as omui
+try:
+    import pymel.core as pm
+    import maya.OpenMayaUI as omui
+    import maya.OpenMaya as OpenMaya
+except Exception as e:
+    pm = None
+    omui = None
+    OpenMaya = None
 
 from PySide2 import QtCore
 from PySide2 import QtGui
@@ -20,13 +28,22 @@ from PySide2.QtGui import *
 
 from shiboken2 import wrapInstance
 
-from common.utils import *
+from illogic.common.utils import (
+    clear_layout,
+    unload_packages,
+)
 
-from common.Prefs import *
+from illogic.common.Prefs import Prefs, PrefsNotInitialized
 
-import maya.OpenMaya as OpenMaya
 
-from .Model import *
+
+from .Model import (
+    ChatGPT3,
+    ChatGPT3_5,
+    ChatGPT4,
+    ChatCompletionModel,
+    Request,
+)
 
 # ######################################################################################################################
 
@@ -63,8 +80,11 @@ class MAIrusState(Enum):
 
 
 class MAIrus(QDialog):
-
-    def __init__(self, path_to_openai_key, prnt=wrapInstance(int(omui.MQtUtil.mainWindow()), QWidget)):
+    """
+    mAIrus class
+    """
+    def __init__(self, path_to_openai_key, prnt=None):
+        prnt = prnt or wrapInstance(int(omui.MQtUtil.mainWindow()), QWidget)
         super(MAIrus, self).__init__(prnt)
 
         # Common Preferences (common preferences on all tools)

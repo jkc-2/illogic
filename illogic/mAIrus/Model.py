@@ -1,7 +1,7 @@
 import threading
 import openai
 from abc import *
-from common.utils import *
+from illogic.common.utils import *
 from PySide2.QtCore import *
 
 

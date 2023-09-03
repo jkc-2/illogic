@@ -1,4 +1,4 @@
-import nuke
+import _MODELS
 import re
 import os
 from common.utils import *
