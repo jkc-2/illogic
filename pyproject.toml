@@ -1,0 +1,8 @@
+[project]
+name = "illogic"
+version = "0.1.dev0"
+description = "A set uof tool for Illogic studio's workflow."
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
